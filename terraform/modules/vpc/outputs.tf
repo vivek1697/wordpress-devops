@@ -13,7 +13,12 @@ output "public_subnet_ids" {
   value       = aws_subnet.public[*].id
 }
 
-output "private_subnet_ids" {
-  description = "IDs of the private subnets."
-  value       = aws_subnet.private[*].id
+output "private_app_subnet_ids" {
+  description = "IDs of the app-tier private subnets (WordPress, EFS)."
+  value       = aws_subnet.private_app[*].id
+}
+
+output "private_data_subnet_ids" {
+  description = "IDs of the data-tier private subnets (Aurora)."
+  value       = aws_subnet.private_data[*].id
 }

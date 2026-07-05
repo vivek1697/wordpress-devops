@@ -33,16 +33,27 @@ resource "aws_subnet" "public" {
   tags = { Name = "${var.name_prefix}-public-${local.azs[count.index]}" }
 }
 
-# Private subnets hold the WordPress instances and Aurora.
-# Offset the CIDR index by 10 to keep public/private ranges easy to tell apart.
-resource "aws_subnet" "private" {
+# App tier: WordPress instances and the EFS mount targets.
+# CIDR index offset by 10 to keep the ranges easy to tell apart.
+resource "aws_subnet" "private_app" {
   count = var.az_count
 
   vpc_id            = aws_vpc.this.id
   cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index + 10)
   availability_zone = local.azs[count.index]
 
-  tags = { Name = "${var.name_prefix}-private-${local.azs[count.index]}" }
+  tags = { Name = "${var.name_prefix}-app-${local.azs[count.index]}" }
+}
+
+# Data tier: Aurora only. Kept separate so it can have no internet route.
+resource "aws_subnet" "private_data" {
+  count = var.az_count
+
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index + 20)
+  availability_zone = local.azs[count.index]
+
+  tags = { Name = "${var.name_prefix}-data-${local.azs[count.index]}" }
 }
 
 # One NAT for the demo. It only handles outbound from private subnets
@@ -80,21 +91,35 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# Private subnets route outbound through the NAT gateway.
-resource "aws_route_table" "private" {
+# App subnets route outbound through the NAT gateway (SSM, package pulls).
+resource "aws_route_table" "app" {
   vpc_id = aws_vpc.this.id
-  tags   = { Name = "${var.name_prefix}-private-rt" }
+  tags   = { Name = "${var.name_prefix}-app-rt" }
 }
 
-resource "aws_route" "private_nat" {
-  route_table_id         = aws_route_table.private.id
+resource "aws_route" "app_nat" {
+  route_table_id         = aws_route_table.app.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.this.id
 }
 
-resource "aws_route_table_association" "private" {
+resource "aws_route_table_association" "app" {
   count = var.az_count
 
-  subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private.id
+  subnet_id      = aws_subnet.private_app[count.index].id
+  route_table_id = aws_route_table.app.id
+}
+
+# Data subnets have no internet route at all. Aurora only talks inside the VPC,
+# so there is nothing to gain from outbound access and a smaller blast radius.
+resource "aws_route_table" "data" {
+  vpc_id = aws_vpc.this.id
+  tags   = { Name = "${var.name_prefix}-data-rt" }
+}
+
+resource "aws_route_table_association" "data" {
+  count = var.az_count
+
+  subnet_id      = aws_subnet.private_data[count.index].id
+  route_table_id = aws_route_table.data.id
 }
