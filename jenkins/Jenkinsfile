@@ -47,9 +47,13 @@ pipeline {
           // Build once in the primary region; ami_regions copies it to the rest.
           sh 'packer build -var region=$PRIMARY_REGION .'
         }
-        // artifact_id is comma-separated "region:ami" pairs, one per region.
+        // Pull the "region:ami" pairs from manifest.json with plain shell tools,
+        // so we don't need the Pipeline Utility Steps plugin (readJSON).
         script {
-          def ids = readJSON(file: 'packer/manifest.json').builds[-1].artifact_id.split(',')
+          def artifact = sh(returnStdout: true, script: '''
+            grep -o '"artifact_id": *"[^"]*"' packer/manifest.json | head -1 | sed -E 's/^"artifact_id": *"//; s/"$//'
+          ''').trim()
+          def ids = artifact.split(',')
           env.AMI_SINGAPORE = ids.find { it.startsWith('ap-southeast-1:') }.split(':')[1]
           env.AMI_IRELAND   = ids.find { it.startsWith('eu-west-1:') }.split(':')[1]
           echo "Singapore ${env.AMI_SINGAPORE} / Ireland ${env.AMI_IRELAND}"
