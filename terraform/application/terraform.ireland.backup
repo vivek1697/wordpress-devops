@@ -1,0 +1,1612 @@
+{
+  "version": 4,
+  "terraform_version": "1.15.5",
+  "serial": 87,
+  "lineage": "fb94f1af-b4d4-2d60-b615-524e0ec2bb73",
+  "outputs": {
+    "alb_dns_name": {
+      "value": "wp-devops-dev-ireland-alb-1670782031.eu-west-1.elb.amazonaws.com",
+      "type": "string"
+    },
+    "aurora_writer_endpoint": {
+      "value": "wp-devops-dev-ireland-aurora.cluster-cn444emggxhs.eu-west-1.rds.amazonaws.com",
+      "type": "string"
+    },
+    "db_secret_arn": {
+      "value": "arn:aws:secretsmanager:ap-southeast-1:707472258852:secret:wp-devops-dev-singapore-db-8tB7wV",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "data",
+      "type": "terraform_remote_state",
+      "name": "core",
+      "provider": "provider[\"terraform.io/builtin/terraform\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "backend": "local",
+            "config": {
+              "value": {
+                "path": "../core-infra/terraform.ireland.tfstate"
+              },
+              "type": [
+                "object",
+                {
+                  "path": "string"
+                }
+              ]
+            },
+            "defaults": null,
+            "outputs": {
+              "value": {
+                "private_app_subnet_ids": [
+                  "subnet-0ec1aa5b6de7c1c88",
+                  "subnet-00e7b633305d9cc62"
+                ],
+                "private_data_subnet_ids": [
+                  "subnet-023d1d533a25804b0",
+                  "subnet-0f823786c54aee4e2"
+                ],
+                "public_subnet_ids": [
+                  "subnet-0c11b6380a06aa83e",
+                  "subnet-0a5e045730ed77546"
+                ],
+                "vpc_id": "vpc-001dbd4307b36eb7b"
+              },
+              "type": [
+                "object",
+                {
+                  "private_app_subnet_ids": [
+                    "tuple",
+                    [
+                      "string",
+                      "string"
+                    ]
+                  ],
+                  "private_data_subnet_ids": [
+                    "tuple",
+                    [
+                      "string",
+                      "string"
+                    ]
+                  ],
+                  "public_subnet_ids": [
+                    "tuple",
+                    [
+                      "string",
+                      "string"
+                    ]
+                  ],
+                  "vpc_id": "string"
+                }
+              ]
+            },
+            "workspace": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "terraform_remote_state",
+      "name": "primary_app",
+      "provider": "provider[\"terraform.io/builtin/terraform\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "backend": "local",
+            "config": {
+              "value": {
+                "path": "terraform.singapore.tfstate"
+              },
+              "type": [
+                "object",
+                {
+                  "path": "string"
+                }
+              ]
+            },
+            "defaults": null,
+            "outputs": {
+              "value": {
+                "alb_dns_name": "wp-devops-dev-singapore-alb-1195068174.ap-southeast-1.elb.amazonaws.com",
+                "aurora_writer_endpoint": "wp-devops-dev-singapore-aurora.cluster-chqgaw24s3yw.ap-southeast-1.rds.amazonaws.com",
+                "db_secret_arn": "arn:aws:secretsmanager:ap-southeast-1:707472258852:secret:wp-devops-dev-singapore-db-8tB7wV"
+              },
+              "type": [
+                "object",
+                {
+                  "alb_dns_name": "string",
+                  "aurora_writer_endpoint": "string",
+                  "db_secret_arn": "string"
+                }
+              ]
+            },
+            "workspace": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "module": "module.alb",
+      "mode": "managed",
+      "type": "aws_lb",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "access_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "arn": "arn:aws:elasticloadbalancing:eu-west-1:707472258852:loadbalancer/app/wp-devops-dev-ireland-alb/0a8e180b26ed4afd",
+            "arn_suffix": "app/wp-devops-dev-ireland-alb/0a8e180b26ed4afd",
+            "client_keep_alive": 3600,
+            "connection_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "customer_owned_ipv4_pool": "",
+            "desync_mitigation_mode": "defensive",
+            "dns_name": "wp-devops-dev-ireland-alb-1670782031.eu-west-1.elb.amazonaws.com",
+            "dns_record_client_routing_policy": null,
+            "drop_invalid_header_fields": false,
+            "enable_cross_zone_load_balancing": true,
+            "enable_deletion_protection": false,
+            "enable_http2": true,
+            "enable_tls_version_and_cipher_suite_headers": false,
+            "enable_waf_fail_open": false,
+            "enable_xff_client_port": false,
+            "enable_zonal_shift": false,
+            "enforce_security_group_inbound_rules_on_private_link_traffic": "",
+            "id": "arn:aws:elasticloadbalancing:eu-west-1:707472258852:loadbalancer/app/wp-devops-dev-ireland-alb/0a8e180b26ed4afd",
+            "idle_timeout": 60,
+            "internal": false,
+            "ip_address_type": "ipv4",
+            "ipam_pools": [],
+            "load_balancer_type": "application",
+            "minimum_load_balancer_capacity": [],
+            "name": "wp-devops-dev-ireland-alb",
+            "name_prefix": "",
+            "preserve_host_header": false,
+            "security_groups": [
+              "sg-02d81a4b1b9706d1c"
+            ],
+            "subnet_mapping": [
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-0a5e045730ed77546"
+              },
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-0c11b6380a06aa83e"
+              }
+            ],
+            "subnets": [
+              "subnet-0a5e045730ed77546",
+              "subnet-0c11b6380a06aa83e"
+            ],
+            "tags": {
+              "Name": "wp-devops-dev-ireland-alb"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "wp-devops-dev-ireland-alb",
+              "Project": "wp-devops"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-001dbd4307b36eb7b",
+            "xff_header_processing_mode": "append",
+            "zone_id": "Z32O12XQLNTSW2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.alb.aws_security_group.alb"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.alb",
+      "mode": "managed",
+      "type": "aws_lb_listener",
+      "name": "http",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "alpn_policy": null,
+            "arn": "arn:aws:elasticloadbalancing:eu-west-1:707472258852:listener/app/wp-devops-dev-ireland-alb/0a8e180b26ed4afd/119bf8a6ac2295d6",
+            "certificate_arn": null,
+            "default_action": [
+              {
+                "authenticate_cognito": [],
+                "authenticate_oidc": [],
+                "fixed_response": [],
+                "forward": [],
+                "order": 1,
+                "redirect": [],
+                "target_group_arn": "arn:aws:elasticloadbalancing:eu-west-1:707472258852:targetgroup/wp-devops-dev-ireland-tg/297b95558521831c",
+                "type": "forward"
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:eu-west-1:707472258852:listener/app/wp-devops-dev-ireland-alb/0a8e180b26ed4afd/119bf8a6ac2295d6",
+            "load_balancer_arn": "arn:aws:elasticloadbalancing:eu-west-1:707472258852:loadbalancer/app/wp-devops-dev-ireland-alb/0a8e180b26ed4afd",
+            "mutual_authentication": [],
+            "port": 80,
+            "protocol": "HTTP",
+            "routing_http_request_x_amzn_mtls_clientcert_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_issuer_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_leaf_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_subject_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_validity_header_name": null,
+            "routing_http_request_x_amzn_tls_cipher_suite_header_name": null,
+            "routing_http_request_x_amzn_tls_version_header_name": null,
+            "routing_http_response_access_control_allow_credentials_header_value": "",
+            "routing_http_response_access_control_allow_headers_header_value": "",
+            "routing_http_response_access_control_allow_methods_header_value": "",
+            "routing_http_response_access_control_allow_origin_header_value": "",
+            "routing_http_response_access_control_expose_headers_header_value": "",
+            "routing_http_response_access_control_max_age_header_value": "",
+            "routing_http_response_content_security_policy_header_value": "",
+            "routing_http_response_server_enabled": true,
+            "routing_http_response_strict_transport_security_header_value": "",
+            "routing_http_response_x_content_type_options_header_value": "",
+            "routing_http_response_x_frame_options_header_value": "",
+            "ssl_policy": "",
+            "tags": null,
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Project": "wp-devops"
+            },
+            "tcp_idle_timeout_seconds": null,
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsInVwZGF0ZSI6MzAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.alb.aws_lb.this",
+            "module.alb.aws_lb_target_group.this",
+            "module.alb.aws_security_group.alb"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.alb",
+      "mode": "managed",
+      "type": "aws_lb_target_group",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:elasticloadbalancing:eu-west-1:707472258852:targetgroup/wp-devops-dev-ireland-tg/297b95558521831c",
+            "arn_suffix": "targetgroup/wp-devops-dev-ireland-tg/297b95558521831c",
+            "connection_termination": null,
+            "deregistration_delay": "300",
+            "health_check": [
+              {
+                "enabled": true,
+                "healthy_threshold": 2,
+                "interval": 30,
+                "matcher": "200-399",
+                "path": "/",
+                "port": "traffic-port",
+                "protocol": "HTTP",
+                "timeout": 5,
+                "unhealthy_threshold": 3
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:eu-west-1:707472258852:targetgroup/wp-devops-dev-ireland-tg/297b95558521831c",
+            "ip_address_type": "ipv4",
+            "lambda_multi_value_headers_enabled": false,
+            "load_balancer_arns": [],
+            "load_balancing_algorithm_type": "round_robin",
+            "load_balancing_anomaly_mitigation": "off",
+            "load_balancing_cross_zone_enabled": "use_load_balancer_configuration",
+            "name": "wp-devops-dev-ireland-tg",
+            "name_prefix": "",
+            "port": 80,
+            "preserve_client_ip": null,
+            "protocol": "HTTP",
+            "protocol_version": "HTTP1",
+            "proxy_protocol_v2": false,
+            "slow_start": 0,
+            "stickiness": [
+              {
+                "cookie_duration": 86400,
+                "cookie_name": "",
+                "enabled": false,
+                "type": "lb_cookie"
+              }
+            ],
+            "tags": {
+              "Name": "wp-devops-dev-ireland-tg"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "wp-devops-dev-ireland-tg",
+              "Project": "wp-devops"
+            },
+            "target_failover": [
+              {
+                "on_deregistration": null,
+                "on_unhealthy": null
+              }
+            ],
+            "target_group_health": [
+              {
+                "dns_failover": [
+                  {
+                    "minimum_healthy_targets_count": "1",
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ],
+                "unhealthy_state_routing": [
+                  {
+                    "minimum_healthy_targets_count": 1,
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ]
+              }
+            ],
+            "target_health_state": [
+              {
+                "enable_unhealthy_connection_termination": null,
+                "unhealthy_draining_interval": null
+              }
+            ],
+            "target_type": "instance",
+            "vpc_id": "vpc-001dbd4307b36eb7b"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.terraform_remote_state.core"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "module": "module.alb",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "alb",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:707472258852:security-group/sg-02d81a4b1b9706d1c",
+            "description": "Allow HTTP to the ALB",
+            "egress": [],
+            "id": "sg-02d81a4b1b9706d1c",
+            "ingress": [],
+            "name": "wp-devops-dev-ireland-alb-sg",
+            "name_prefix": "",
+            "owner_id": "707472258852",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "wp-devops-dev-ireland-alb-sg"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "wp-devops-dev-ireland-alb-sg",
+              "Project": "wp-devops"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-001dbd4307b36eb7b"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "data.terraform_remote_state.core"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.alb",
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "all_out",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "cidr_blocks": [
+              "0.0.0.0/0"
+            ],
+            "description": "Forward traffic to the instances",
+            "from_port": 0,
+            "id": "sgrule-1338176672",
+            "ipv6_cidr_blocks": null,
+            "prefix_list_ids": null,
+            "protocol": "-1",
+            "security_group_id": "sg-02d81a4b1b9706d1c",
+            "security_group_rule_id": "sgr-0b3f4234a5bb83ad9",
+            "self": false,
+            "source_security_group_id": null,
+            "timeouts": null,
+            "to_port": 0,
+            "type": "egress"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjIifQ==",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.alb.aws_security_group.alb"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.alb",
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "http_in",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "cidr_blocks": [
+              "0.0.0.0/0"
+            ],
+            "description": "HTTP in",
+            "from_port": 80,
+            "id": "sgrule-1195167066",
+            "ipv6_cidr_blocks": null,
+            "prefix_list_ids": null,
+            "protocol": "tcp",
+            "security_group_id": "sg-02d81a4b1b9706d1c",
+            "security_group_rule_id": "sgr-0e7e6fce50d4698d0",
+            "self": false,
+            "source_security_group_id": null,
+            "timeouts": null,
+            "to_port": 80,
+            "type": "ingress"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjIifQ==",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.alb.aws_security_group.alb"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.asg",
+      "mode": "data",
+      "type": "aws_iam_policy_document",
+      "name": "assume",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "2851119427",
+            "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    }\n  ]\n}",
+            "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sts:AssumeRole\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"}}]}",
+            "override_json": null,
+            "override_policy_documents": null,
+            "policy_id": null,
+            "source_json": null,
+            "source_policy_documents": null,
+            "statement": [
+              {
+                "actions": [
+                  "sts:AssumeRole"
+                ],
+                "condition": [],
+                "effect": "Allow",
+                "not_actions": [],
+                "not_principals": [],
+                "not_resources": [],
+                "principals": [
+                  {
+                    "identifiers": [
+                      "ec2.amazonaws.com"
+                    ],
+                    "type": "Service"
+                  }
+                ],
+                "resources": [],
+                "sid": ""
+              }
+            ],
+            "version": "2012-10-17"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "module": "module.asg",
+      "mode": "managed",
+      "type": "aws_autoscaling_group",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:autoscaling:eu-west-1:707472258852:autoScalingGroup:7761b838-fddb-4e44-aad0-1efc185743c5:autoScalingGroupName/wp-devops-dev-ireland-wp-asg",
+            "availability_zone_distribution": [
+              {
+                "capacity_distribution_strategy": "balanced-best-effort"
+              }
+            ],
+            "availability_zones": [
+              "eu-west-1a",
+              "eu-west-1b"
+            ],
+            "capacity_rebalance": false,
+            "capacity_reservation_specification": [
+              {
+                "capacity_reservation_preference": "default",
+                "capacity_reservation_target": []
+              }
+            ],
+            "context": "",
+            "default_cooldown": 300,
+            "default_instance_warmup": 0,
+            "desired_capacity": 2,
+            "desired_capacity_type": "",
+            "enabled_metrics": null,
+            "force_delete": false,
+            "force_delete_warm_pool": false,
+            "health_check_grace_period": 300,
+            "health_check_type": "ELB",
+            "id": "wp-devops-dev-ireland-wp-asg",
+            "ignore_failed_scaling_activities": false,
+            "initial_lifecycle_hook": [],
+            "instance_maintenance_policy": [],
+            "instance_refresh": [],
+            "launch_configuration": "",
+            "launch_template": [
+              {
+                "id": "lt-0227dd21e7faac025",
+                "name": "wp-devops-dev-ireland-wp-20260707113940794800000003",
+                "version": "$Latest"
+              }
+            ],
+            "load_balancers": [],
+            "max_instance_lifetime": 0,
+            "max_size": 10,
+            "metrics_granularity": "1Minute",
+            "min_elb_capacity": null,
+            "min_size": 2,
+            "mixed_instances_policy": [],
+            "name": "wp-devops-dev-ireland-wp-asg",
+            "name_prefix": "",
+            "placement_group": "",
+            "predicted_capacity": 0,
+            "protect_from_scale_in": false,
+            "service_linked_role_arn": "arn:aws:iam::707472258852:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling",
+            "suspended_processes": null,
+            "tag": [],
+            "target_group_arns": [
+              "arn:aws:elasticloadbalancing:eu-west-1:707472258852:targetgroup/wp-devops-dev-ireland-tg/297b95558521831c"
+            ],
+            "termination_policies": null,
+            "timeouts": null,
+            "traffic_source": [
+              {
+                "identifier": "arn:aws:elasticloadbalancing:eu-west-1:707472258852:targetgroup/wp-devops-dev-ireland-tg/297b95558521831c",
+                "type": "elbv2"
+              }
+            ],
+            "vpc_zone_identifier": [
+              "subnet-00e7b633305d9cc62",
+              "subnet-0ec1aa5b6de7c1c88"
+            ],
+            "wait_for_capacity_timeout": "10m",
+            "wait_for_elb_capacity": null,
+            "warm_pool": [],
+            "warm_pool_size": 0
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjo2MDAwMDAwMDAwMDAsInVwZGF0ZSI6NjAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "data.terraform_remote_state.primary_app",
+            "module.alb.aws_lb_target_group.this",
+            "module.asg.aws_iam_instance_profile.this",
+            "module.asg.aws_iam_role.this",
+            "module.asg.aws_launch_template.this",
+            "module.asg.aws_security_group.app",
+            "module.asg.data.aws_iam_policy_document.assume",
+            "module.aurora.aws_db_subnet_group.this",
+            "module.aurora.aws_rds_cluster.this",
+            "module.aurora.aws_rds_global_cluster.this",
+            "module.aurora.aws_secretsmanager_secret.db",
+            "module.aurora.aws_security_group.db",
+            "module.aurora.data.aws_kms_alias.rds",
+            "module.aurora.random_password.master",
+            "module.efs.aws_efs_file_system.this"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "module": "module.asg",
+      "mode": "managed",
+      "type": "aws_autoscaling_policy",
+      "name": "cpu",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "adjustment_type": "",
+            "arn": "arn:aws:autoscaling:eu-west-1:707472258852:scalingPolicy:ad334395-c1be-4ffa-95f8-041feab3727b:autoScalingGroupName/wp-devops-dev-ireland-wp-asg:policyName/wp-devops-dev-ireland-cpu-target",
+            "autoscaling_group_name": "wp-devops-dev-ireland-wp-asg",
+            "cooldown": 0,
+            "enabled": true,
+            "estimated_instance_warmup": 0,
+            "id": "wp-devops-dev-ireland-cpu-target",
+            "metric_aggregation_type": "",
+            "min_adjustment_magnitude": 0,
+            "name": "wp-devops-dev-ireland-cpu-target",
+            "policy_type": "TargetTrackingScaling",
+            "predictive_scaling_configuration": [],
+            "scaling_adjustment": 0,
+            "step_adjustment": [],
+            "target_tracking_configuration": [
+              {
+                "customized_metric_specification": [],
+                "disable_scale_in": false,
+                "predefined_metric_specification": [
+                  {
+                    "predefined_metric_type": "ASGAverageCPUUtilization",
+                    "resource_label": ""
+                  }
+                ],
+                "target_value": 50
+              }
+            ]
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "data.terraform_remote_state.primary_app",
+            "module.alb.aws_lb_target_group.this",
+            "module.asg.aws_autoscaling_group.this",
+            "module.asg.aws_iam_instance_profile.this",
+            "module.asg.aws_iam_role.this",
+            "module.asg.aws_launch_template.this",
+            "module.asg.aws_security_group.app",
+            "module.asg.data.aws_iam_policy_document.assume",
+            "module.aurora.aws_db_subnet_group.this",
+            "module.aurora.aws_rds_cluster.this",
+            "module.aurora.aws_rds_global_cluster.this",
+            "module.aurora.aws_secretsmanager_secret.db",
+            "module.aurora.aws_security_group.db",
+            "module.aurora.data.aws_kms_alias.rds",
+            "module.aurora.random_password.master",
+            "module.efs.aws_efs_file_system.this"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.asg",
+      "mode": "managed",
+      "type": "aws_iam_instance_profile",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::707472258852:instance-profile/wp-devops-dev-ireland-wp-profile",
+            "create_date": "2026-07-07T11:30:36Z",
+            "id": "wp-devops-dev-ireland-wp-profile",
+            "name": "wp-devops-dev-ireland-wp-profile",
+            "name_prefix": "",
+            "path": "/",
+            "role": "wp-devops-dev-ireland-wp-role",
+            "tags": null,
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Project": "wp-devops"
+            },
+            "unique_id": "AIPA2JOFB64SCQETK3MIU"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.asg.aws_iam_role.this",
+            "module.asg.data.aws_iam_policy_document.assume"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "module": "module.asg",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::707472258852:role/wp-devops-dev-ireland-wp-role",
+            "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+            "create_date": "2026-07-07T11:30:36Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "wp-devops-dev-ireland-wp-role",
+            "inline_policy": [],
+            "managed_policy_arns": [],
+            "max_session_duration": 3600,
+            "name": "wp-devops-dev-ireland-wp-role",
+            "name_prefix": "",
+            "path": "/",
+            "permissions_boundary": "",
+            "tags": null,
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Project": "wp-devops"
+            },
+            "unique_id": "AROA2JOFB64SGMD3UME65"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.asg.data.aws_iam_policy_document.assume"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "module": "module.asg",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "read_db_secret",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "wp-devops-dev-ireland-wp-role:wp-devops-dev-ireland-read-db-secret",
+            "name": "wp-devops-dev-ireland-read-db-secret",
+            "name_prefix": "",
+            "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"secretsmanager:GetSecretValue\",\"Effect\":\"Allow\",\"Resource\":\"arn:aws:secretsmanager:ap-southeast-1:707472258852:secret:wp-devops-dev-singapore-db-8tB7wV\"}]}",
+            "role": "wp-devops-dev-ireland-wp-role"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.terraform_remote_state.primary_app",
+            "module.asg.aws_iam_role.this",
+            "module.asg.data.aws_iam_policy_document.assume",
+            "module.aurora.aws_secretsmanager_secret.db"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.asg",
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "ssm",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "wp-devops-dev-ireland-wp-role-20260707113036821500000002",
+            "policy_arn": "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+            "role": "wp-devops-dev-ireland-wp-role"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.asg.aws_iam_role.this",
+            "module.asg.data.aws_iam_policy_document.assume"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.asg",
+      "mode": "managed",
+      "type": "aws_launch_template",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:707472258852:launch-template/lt-0227dd21e7faac025",
+            "block_device_mappings": [],
+            "capacity_reservation_specification": [],
+            "cpu_options": [],
+            "credit_specification": [],
+            "default_version": 1,
+            "description": "",
+            "disable_api_stop": false,
+            "disable_api_termination": false,
+            "ebs_optimized": "",
+            "elastic_gpu_specifications": [],
+            "elastic_inference_accelerator": [],
+            "enclave_options": [],
+            "hibernation_options": [],
+            "iam_instance_profile": [
+              {
+                "arn": "arn:aws:iam::707472258852:instance-profile/wp-devops-dev-ireland-wp-profile",
+                "name": ""
+              }
+            ],
+            "id": "lt-0227dd21e7faac025",
+            "image_id": "ami-0e64243b8f51a4d09",
+            "instance_initiated_shutdown_behavior": "",
+            "instance_market_options": [],
+            "instance_requirements": [],
+            "instance_type": "t3.small",
+            "kernel_id": "",
+            "key_name": "",
+            "latest_version": 1,
+            "license_specification": [],
+            "maintenance_options": [],
+            "metadata_options": [],
+            "monitoring": [],
+            "name": "wp-devops-dev-ireland-wp-20260707113940794800000003",
+            "name_prefix": "wp-devops-dev-ireland-wp-",
+            "network_interfaces": [],
+            "placement": [],
+            "private_dns_name_options": [],
+            "ram_disk_id": "",
+            "security_group_names": null,
+            "tag_specifications": [
+              {
+                "resource_type": "instance",
+                "tags": {
+                  "Name": "wp-devops-dev-ireland-wp"
+                }
+              }
+            ],
+            "tags": null,
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Project": "wp-devops"
+            },
+            "update_default_version": null,
+            "user_data": "IyEvYmluL2Jhc2gKc2V0IC1ldW8gcGlwZWZhaWwKCiMgRmV0Y2ggdGhlIERCIHBhc3N3b3JkIGZyb20gU2VjcmV0cyBNYW5hZ2VyIHVzaW5nIHRoZSBpbnN0YW5jZSByb2xlLCBzbwojIG5vIGNyZWRlbnRpYWwgaXMgZXZlciBiYWtlZCBpbnRvIHRoZSBBTUkgb3IgcGFzc2VkIHRocm91Z2ggdXNlci1kYXRhLgojIFRoZSByZWdpb24gaXMgcmVhZCBmcm9tIHRoZSBBUk4sIHNvIHRoaXMgYWxzbyB3b3JrcyBjcm9zcy1yZWdpb24uClNFQ1JFVF9SRUdJT049JChlY2hvICJhcm46YXdzOnNlY3JldHNtYW5hZ2VyOmFwLXNvdXRoZWFzdC0xOjcwNzQ3MjI1ODg1MjpzZWNyZXQ6d3AtZGV2b3BzLWRldi1zaW5nYXBvcmUtZGItOHRCN3dWIiB8IGN1dCAtZDogLWY0KQpEQl9QQVNTV09SRD0kKGF3cyBzZWNyZXRzbWFuYWdlciBnZXQtc2VjcmV0LXZhbHVlIFwKICAtLXNlY3JldC1pZCAiYXJuOmF3czpzZWNyZXRzbWFuYWdlcjphcC1zb3V0aGVhc3QtMTo3MDc0NzIyNTg4NTI6c2VjcmV0OndwLWRldm9wcy1kZXYtc2luZ2Fwb3JlLWRiLTh0Qjd3ViIgXAogIC0tcmVnaW9uICIkU0VDUkVUX1JFR0lPTiIgXAogIC0tcXVlcnkgU2VjcmV0U3RyaW5nIC0tb3V0cHV0IHRleHQgfCBqcSAtciAnLnBhc3N3b3JkJykKCmNhdCA+IC9ldGMvd29yZHByZXNzL3dwLWRiLnBocCA8PFBIUAo8P3BocApkZWZpbmUoJ0RCX05BTUUnLCAnd29yZHByZXNzJyk7CmRlZmluZSgnREJfVVNFUicsICd3cGFkbWluJyk7CmRlZmluZSgnREJfUEFTU1dPUkQnLCAnJERCX1BBU1NXT1JEJyk7CmRlZmluZSgnREJfSE9TVCcsICd3cC1kZXZvcHMtZGV2LWlyZWxhbmQtYXVyb3JhLmNsdXN0ZXItY240NDRlbWdneGhzLmV1LXdlc3QtMS5yZHMuYW1hem9uYXdzLmNvbScpOwpQSFAKCmNob3duIHJvb3Q6d3d3LWRhdGEgL2V0Yy93b3JkcHJlc3Mvd3AtZGIucGhwCmNobW9kIDA2NDAgL2V0Yy93b3JkcHJlc3Mvd3AtZGIucGhwCgojIE1vdW50IHRoZSBzaGFyZWQgRUZTIGF0IHdwLWNvbnRlbnQvdXBsb2FkcyBzbyBtZWRpYSBpcyB0aGUgc2FtZSBvbiBldmVyeQojIGluc3RhbmNlLiBmc3RhYiBrZWVwcyBpdCBtb3VudGVkIGFjcm9zcyByZWJvb3RzOyBuZnMtY29tbW9uIGlzIGJha2VkIGluLgpVUExPQURTPS92YXIvd3d3L2h0bWwvd3AtY29udGVudC91cGxvYWRzCm1rZGlyIC1wICIkVVBMT0FEUyIKZWNobyAiZnMtMDMyYjM3ZjE0MzI2ZDMwMzQuZWZzLmV1LXdlc3QtMS5hbWF6b25hd3MuY29tOi8gJFVQTE9BRFMgbmZzNCBuZnN2ZXJzPTQuMSxfbmV0ZGV2IDAgMCIgPj4gL2V0Yy9mc3RhYgptb3VudCAiJFVQTE9BRFMiCmNob3duIHd3dy1kYXRhOnd3dy1kYXRhICIkVVBMT0FEUyIKCnN5c3RlbWN0bCByZXN0YXJ0IGFwYWNoZTIK",
+            "vpc_security_group_ids": [
+              "sg-072b6b565757d7928"
+            ]
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "data.terraform_remote_state.primary_app",
+            "module.asg.aws_iam_instance_profile.this",
+            "module.asg.aws_iam_role.this",
+            "module.asg.aws_security_group.app",
+            "module.asg.data.aws_iam_policy_document.assume",
+            "module.aurora.aws_db_subnet_group.this",
+            "module.aurora.aws_rds_cluster.this",
+            "module.aurora.aws_rds_global_cluster.this",
+            "module.aurora.aws_secretsmanager_secret.db",
+            "module.aurora.aws_security_group.db",
+            "module.aurora.data.aws_kms_alias.rds",
+            "module.aurora.random_password.master",
+            "module.efs.aws_efs_file_system.this"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "module": "module.asg",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "app",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:707472258852:security-group/sg-072b6b565757d7928",
+            "description": "WordPress instances",
+            "egress": [],
+            "id": "sg-072b6b565757d7928",
+            "ingress": [],
+            "name": "wp-devops-dev-ireland-app-sg",
+            "name_prefix": "",
+            "owner_id": "707472258852",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "wp-devops-dev-ireland-app-sg"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "wp-devops-dev-ireland-app-sg",
+              "Project": "wp-devops"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-001dbd4307b36eb7b"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "data.terraform_remote_state.core"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "module": "module.asg",
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "app_all_out",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "cidr_blocks": [
+              "0.0.0.0/0"
+            ],
+            "description": "Outbound to DB, NAT and AWS APIs",
+            "from_port": 0,
+            "id": "sgrule-961826990",
+            "ipv6_cidr_blocks": null,
+            "prefix_list_ids": null,
+            "protocol": "-1",
+            "security_group_id": "sg-072b6b565757d7928",
+            "security_group_rule_id": "sgr-08a0c9f5c59c94326",
+            "self": false,
+            "source_security_group_id": null,
+            "timeouts": null,
+            "to_port": 0,
+            "type": "egress"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjIifQ==",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.asg.aws_security_group.app"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.asg",
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "http_from_alb",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "cidr_blocks": null,
+            "description": "HTTP from ALB",
+            "from_port": 80,
+            "id": "sgrule-3755010560",
+            "ipv6_cidr_blocks": null,
+            "prefix_list_ids": null,
+            "protocol": "tcp",
+            "security_group_id": "sg-072b6b565757d7928",
+            "security_group_rule_id": "sgr-029b1f38344a7bf98",
+            "self": false,
+            "source_security_group_id": "sg-02d81a4b1b9706d1c",
+            "timeouts": null,
+            "to_port": 80,
+            "type": "ingress"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjIifQ==",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.alb.aws_security_group.alb",
+            "module.asg.aws_security_group.app"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.aurora",
+      "mode": "data",
+      "type": "aws_kms_alias",
+      "name": "rds",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:kms:eu-west-1:707472258852:alias/aws/rds",
+            "id": "arn:aws:kms:eu-west-1:707472258852:alias/aws/rds",
+            "name": "alias/aws/rds",
+            "target_key_arn": "arn:aws:kms:eu-west-1:707472258852:key/3bc2219c-f4f1-4d71-aff0-ddda2dbd57f7",
+            "target_key_id": "3bc2219c-f4f1-4d71-aff0-ddda2dbd57f7"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "module": "module.aurora",
+      "mode": "managed",
+      "type": "aws_db_subnet_group",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:rds:eu-west-1:707472258852:subgrp:wp-devops-dev-ireland-aurora",
+            "description": "Managed by Terraform",
+            "id": "wp-devops-dev-ireland-aurora",
+            "name": "wp-devops-dev-ireland-aurora",
+            "name_prefix": "",
+            "subnet_ids": [
+              "subnet-023d1d533a25804b0",
+              "subnet-0f823786c54aee4e2"
+            ],
+            "supported_network_types": [
+              "IPV4"
+            ],
+            "tags": {
+              "Name": "wp-devops-dev-ireland-aurora-subnets"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "wp-devops-dev-ireland-aurora-subnets",
+              "Project": "wp-devops"
+            },
+            "vpc_id": "vpc-001dbd4307b36eb7b"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.terraform_remote_state.core"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "module": "module.aurora",
+      "mode": "managed",
+      "type": "aws_rds_cluster",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "allocated_storage": 1,
+            "allow_major_version_upgrade": null,
+            "apply_immediately": null,
+            "arn": "arn:aws:rds:eu-west-1:707472258852:cluster:wp-devops-dev-ireland-aurora",
+            "availability_zones": [
+              "eu-west-1a",
+              "eu-west-1b",
+              "eu-west-1c"
+            ],
+            "backtrack_window": 0,
+            "backup_retention_period": 1,
+            "ca_certificate_identifier": null,
+            "ca_certificate_valid_till": null,
+            "cluster_identifier": "wp-devops-dev-ireland-aurora",
+            "cluster_identifier_prefix": "",
+            "cluster_members": [],
+            "cluster_resource_id": "cluster-52I5XXV2ES6MCCDQ4QIRHEWHBY",
+            "cluster_scalability_type": "",
+            "copy_tags_to_snapshot": false,
+            "database_insights_mode": "standard",
+            "database_name": "wordpress",
+            "db_cluster_instance_class": "",
+            "db_cluster_parameter_group_name": "default.aurora-mysql8.0",
+            "db_instance_parameter_group_name": null,
+            "db_subnet_group_name": "wp-devops-dev-ireland-aurora",
+            "db_system_id": "",
+            "delete_automated_backups": true,
+            "deletion_protection": false,
+            "domain": "",
+            "domain_iam_role_name": "",
+            "enable_global_write_forwarding": true,
+            "enable_http_endpoint": false,
+            "enable_local_write_forwarding": false,
+            "enabled_cloudwatch_logs_exports": null,
+            "endpoint": "wp-devops-dev-ireland-aurora.cluster-cn444emggxhs.eu-west-1.rds.amazonaws.com",
+            "engine": "aurora-mysql",
+            "engine_lifecycle_support": "open-source-rds-extended-support",
+            "engine_mode": "provisioned",
+            "engine_version": "8.0.mysql_aurora.3.12.0",
+            "engine_version_actual": "8.0.mysql_aurora.3.12.0",
+            "final_snapshot_identifier": null,
+            "global_cluster_identifier": "wp-devops-dev-global",
+            "hosted_zone_id": "Z29XKXDKYMONMX",
+            "iam_database_authentication_enabled": false,
+            "iam_roles": [],
+            "id": "wp-devops-dev-ireland-aurora",
+            "iops": 0,
+            "kms_key_id": "arn:aws:kms:eu-west-1:707472258852:key/3bc2219c-f4f1-4d71-aff0-ddda2dbd57f7",
+            "manage_master_user_password": null,
+            "master_password": null,
+            "master_password_wo": null,
+            "master_password_wo_version": null,
+            "master_user_secret": [],
+            "master_user_secret_kms_key_id": null,
+            "master_username": "wpadmin",
+            "monitoring_interval": 0,
+            "monitoring_role_arn": "",
+            "network_type": "IPV4",
+            "performance_insights_enabled": false,
+            "performance_insights_kms_key_id": "",
+            "performance_insights_retention_period": 0,
+            "port": 3306,
+            "preferred_backup_window": "23:24-23:54",
+            "preferred_maintenance_window": "tue:03:29-tue:03:59",
+            "reader_endpoint": "wp-devops-dev-ireland-aurora.cluster-ro-cn444emggxhs.eu-west-1.rds.amazonaws.com",
+            "replication_source_identifier": "arn:aws:rds:ap-southeast-1:707472258852:cluster:wp-devops-dev-singapore-aurora",
+            "restore_to_point_in_time": [],
+            "s3_import": [],
+            "scaling_configuration": [],
+            "serverlessv2_scaling_configuration": [],
+            "skip_final_snapshot": true,
+            "snapshot_identifier": null,
+            "source_region": null,
+            "storage_encrypted": true,
+            "storage_type": "",
+            "tags": null,
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Project": "wp-devops"
+            },
+            "timeouts": null,
+            "vpc_security_group_ids": [
+              "sg-04e40d220440195df"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "master_password"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "master_password_wo"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo3MjAwMDAwMDAwMDAwLCJkZWxldGUiOjcyMDAwMDAwMDAwMDAsInVwZGF0ZSI6NzIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.aurora.aws_db_subnet_group.this",
+            "module.aurora.aws_rds_global_cluster.this",
+            "module.aurora.aws_security_group.db",
+            "module.aurora.data.aws_kms_alias.rds",
+            "module.aurora.random_password.master"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "module": "module.aurora",
+      "mode": "managed",
+      "type": "aws_rds_cluster_instance",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "apply_immediately": null,
+            "arn": "arn:aws:rds:eu-west-1:707472258852:db:wp-devops-dev-ireland-aurora-0",
+            "auto_minor_version_upgrade": true,
+            "availability_zone": "eu-west-1b",
+            "ca_cert_identifier": "rds-ca-rsa2048-g1",
+            "cluster_identifier": "wp-devops-dev-ireland-aurora",
+            "copy_tags_to_snapshot": false,
+            "custom_iam_instance_profile": "",
+            "db_parameter_group_name": "default.aurora-mysql8.0",
+            "db_subnet_group_name": "wp-devops-dev-ireland-aurora",
+            "dbi_resource_id": "db-NZUJ3SOP3XT4JQVJHEHPFFG2JY",
+            "endpoint": "wp-devops-dev-ireland-aurora-0.cn444emggxhs.eu-west-1.rds.amazonaws.com",
+            "engine": "aurora-mysql",
+            "engine_version": "8.0.mysql_aurora.3.12.0",
+            "engine_version_actual": "8.0.mysql_aurora.3.12.0",
+            "force_destroy": false,
+            "id": "wp-devops-dev-ireland-aurora-0",
+            "identifier": "wp-devops-dev-ireland-aurora-0",
+            "identifier_prefix": "",
+            "instance_class": "db.r6g.large",
+            "kms_key_id": "arn:aws:kms:eu-west-1:707472258852:key/3bc2219c-f4f1-4d71-aff0-ddda2dbd57f7",
+            "monitoring_interval": 0,
+            "monitoring_role_arn": "",
+            "network_type": "IPV4",
+            "performance_insights_enabled": false,
+            "performance_insights_kms_key_id": "",
+            "performance_insights_retention_period": 0,
+            "port": 3306,
+            "preferred_backup_window": "23:24-23:54",
+            "preferred_maintenance_window": "sun:00:50-sun:01:20",
+            "promotion_tier": 0,
+            "publicly_accessible": false,
+            "storage_encrypted": true,
+            "tags": null,
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Project": "wp-devops"
+            },
+            "timeouts": null,
+            "writer": false
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo1NDAwMDAwMDAwMDAwLCJkZWxldGUiOjU0MDAwMDAwMDAwMDAsInVwZGF0ZSI6NTQwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.aurora.aws_db_subnet_group.this",
+            "module.aurora.aws_rds_cluster.this",
+            "module.aurora.aws_rds_global_cluster.this",
+            "module.aurora.aws_security_group.db",
+            "module.aurora.data.aws_kms_alias.rds",
+            "module.aurora.random_password.master"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.aurora",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "db",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:707472258852:security-group/sg-04e40d220440195df",
+            "description": "Allow MySQL from the app tier",
+            "egress": [],
+            "id": "sg-04e40d220440195df",
+            "ingress": [],
+            "name": "wp-devops-dev-ireland-aurora-sg",
+            "name_prefix": "",
+            "owner_id": "707472258852",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "wp-devops-dev-ireland-aurora-sg"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "wp-devops-dev-ireland-aurora-sg",
+              "Project": "wp-devops"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-001dbd4307b36eb7b"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "data.terraform_remote_state.core"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "module": "module.aurora",
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "db_ingress",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 2,
+          "attributes": {
+            "cidr_blocks": null,
+            "description": "MySQL from app tier",
+            "from_port": 3306,
+            "id": "sgrule-463690238",
+            "ipv6_cidr_blocks": null,
+            "prefix_list_ids": null,
+            "protocol": "tcp",
+            "security_group_id": "sg-04e40d220440195df",
+            "security_group_rule_id": "sgr-039b7ff3027fbf0bd",
+            "self": false,
+            "source_security_group_id": "sg-072b6b565757d7928",
+            "timeouts": null,
+            "to_port": 3306,
+            "type": "ingress"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjIifQ==",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.asg.aws_security_group.app",
+            "module.aurora.aws_security_group.db"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.efs",
+      "mode": "managed",
+      "type": "aws_efs_file_system",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:elasticfilesystem:eu-west-1:707472258852:file-system/fs-032b37f14326d3034",
+            "availability_zone_id": "",
+            "availability_zone_name": "",
+            "creation_token": "terraform-20260707113036167000000001",
+            "dns_name": "fs-032b37f14326d3034.efs.eu-west-1.amazonaws.com",
+            "encrypted": true,
+            "id": "fs-032b37f14326d3034",
+            "kms_key_id": "arn:aws:kms:eu-west-1:707472258852:key/f926b364-7927-4cc8-9620-96fedf01f7ec",
+            "lifecycle_policy": [],
+            "name": "wp-devops-dev-ireland-uploads",
+            "number_of_mount_targets": 0,
+            "owner_id": "707472258852",
+            "performance_mode": "generalPurpose",
+            "protection": [
+              {
+                "replication_overwrite": "ENABLED"
+              }
+            ],
+            "provisioned_throughput_in_mibps": 0,
+            "size_in_bytes": [
+              {
+                "value": 6144,
+                "value_in_ia": 0,
+                "value_in_standard": 6144
+              }
+            ],
+            "tags": {
+              "Name": "wp-devops-dev-ireland-uploads"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "wp-devops-dev-ireland-uploads",
+              "Project": "wp-devops"
+            },
+            "throughput_mode": "bursting"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "module": "module.efs",
+      "mode": "managed",
+      "type": "aws_efs_mount_target",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "availability_zone_id": "euw1-az2",
+            "availability_zone_name": "eu-west-1a",
+            "dns_name": "fs-032b37f14326d3034.efs.eu-west-1.amazonaws.com",
+            "file_system_arn": "arn:aws:elasticfilesystem:eu-west-1:707472258852:file-system/fs-032b37f14326d3034",
+            "file_system_id": "fs-032b37f14326d3034",
+            "id": "fsmt-0ca3bbf632678e586",
+            "ip_address": "10.0.10.38",
+            "mount_target_dns_name": "eu-west-1a.fs-032b37f14326d3034.efs.eu-west-1.amazonaws.com",
+            "network_interface_id": "eni-0e892c80d2d102671",
+            "owner_id": "707472258852",
+            "security_groups": [
+              "sg-0799d44203b1b15c6"
+            ],
+            "subnet_id": "subnet-0ec1aa5b6de7c1c88",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjYwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.efs.aws_efs_file_system.this",
+            "module.efs.aws_security_group.efs"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 0,
+          "attributes": {
+            "availability_zone_id": "euw1-az3",
+            "availability_zone_name": "eu-west-1b",
+            "dns_name": "fs-032b37f14326d3034.efs.eu-west-1.amazonaws.com",
+            "file_system_arn": "arn:aws:elasticfilesystem:eu-west-1:707472258852:file-system/fs-032b37f14326d3034",
+            "file_system_id": "fs-032b37f14326d3034",
+            "id": "fsmt-0b81a6440a1473890",
+            "ip_address": "10.0.11.19",
+            "mount_target_dns_name": "eu-west-1b.fs-032b37f14326d3034.efs.eu-west-1.amazonaws.com",
+            "network_interface_id": "eni-039f57618524af77b",
+            "owner_id": "707472258852",
+            "security_groups": [
+              "sg-0799d44203b1b15c6"
+            ],
+            "subnet_id": "subnet-00e7b633305d9cc62",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjYwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.efs.aws_efs_file_system.this",
+            "module.efs.aws_security_group.efs"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.efs",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "efs",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:707472258852:security-group/sg-0799d44203b1b15c6",
+            "description": "Allow NFS from the app tier",
+            "egress": [],
+            "id": "sg-0799d44203b1b15c6",
+            "ingress": [],
+            "name": "wp-devops-dev-ireland-efs-sg",
+            "name_prefix": "",
+            "owner_id": "707472258852",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "wp-devops-dev-ireland-efs-sg"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "wp-devops-dev-ireland-efs-sg",
+              "Project": "wp-devops"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-001dbd4307b36eb7b"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "data.terraform_remote_state.core"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.efs",
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "nfs_ingress",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 2,
+          "attributes": {
+            "cidr_blocks": null,
+            "description": "NFS from app tier",
+            "from_port": 2049,
+            "id": "sgrule-3084199688",
+            "ipv6_cidr_blocks": null,
+            "prefix_list_ids": null,
+            "protocol": "tcp",
+            "security_group_id": "sg-0799d44203b1b15c6",
+            "security_group_rule_id": "sgr-08ec98e566f0288f8",
+            "self": false,
+            "source_security_group_id": "sg-072b6b565757d7928",
+            "timeouts": null,
+            "to_port": 2049,
+            "type": "ingress"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjIifQ==",
+          "dependencies": [
+            "data.terraform_remote_state.core",
+            "module.asg.aws_security_group.app",
+            "module.efs.aws_security_group.efs"
+          ]
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

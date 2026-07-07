@@ -1,0 +1,32 @@
+#!/bin/bash
+set -euo pipefail
+
+# Fetch the DB password from Secrets Manager using the instance role, so
+# no credential is ever baked into the AMI or passed through user-data.
+# The region is read from the ARN, so this also works cross-region.
+SECRET_REGION=$(echo "${db_secret_arn}" | cut -d: -f4)
+DB_PASSWORD=$(aws secretsmanager get-secret-value \
+  --secret-id "${db_secret_arn}" \
+  --region "$SECRET_REGION" \
+  --query SecretString --output text | jq -r '.password')
+
+cat > /etc/wordpress/wp-db.php <<PHP
+<?php
+define('DB_NAME', '${db_name}');
+define('DB_USER', '${db_user}');
+define('DB_PASSWORD', '$DB_PASSWORD');
+define('DB_HOST', '${db_host}');
+PHP
+
+chown root:www-data /etc/wordpress/wp-db.php
+chmod 0640 /etc/wordpress/wp-db.php
+
+# Mount the shared EFS at wp-content/uploads so media is the same on every
+# instance. fstab keeps it mounted across reboots; nfs-common is baked in.
+UPLOADS=/var/www/html/wp-content/uploads
+mkdir -p "$UPLOADS"
+echo "${efs_dns_name}:/ $UPLOADS nfs4 nfsvers=4.1,_netdev 0 0" >> /etc/fstab
+mount "$UPLOADS"
+chown www-data:www-data "$UPLOADS"
+
+systemctl restart apache2
