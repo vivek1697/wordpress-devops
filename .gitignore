@@ -44,3 +44,7 @@ terraform.rc
 # planout
 
 .DS_Store
+
+# Packer build output
+packer/manifest.json
+packer/packer_cache/
