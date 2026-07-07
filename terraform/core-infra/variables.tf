@@ -1,7 +1,7 @@
 variable "project" {
   description = "Project name, used as a prefix for names and tags."
   type        = string
-  default     = "wordpress-devops"
+  default     = "wp-devops"
 }
 
 variable "environment" {
