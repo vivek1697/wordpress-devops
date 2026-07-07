@@ -2,6 +2,9 @@
 // layer to both regions with Terraform. Same build-once logic as the manual
 // runbook: one image, promoted to each region.
 //
+// Flow per region: plan -> review the plan in the log -> approve -> apply.
+// The plan always runs first; the apply only happens if a human approves.
+//
 // Agent needs: packer, terraform, ansible, awscli on PATH.
 // Jenkins credentials (Secret text): aws-access-key-id, aws-secret-access-key
 // The DB password is generated in Terraform and stored in Secrets Manager, so the
@@ -18,11 +21,11 @@ pipeline {
     disableConcurrentBuilds()
   }
 
-  parameters {
-    booleanParam(name: 'APPLY', defaultValue: false, description: 'Apply after plan (otherwise plan only)')
-  }
-
   environment {
+    // Local Jenkins on macOS runs with a minimal PATH; list the tool dirs
+    // explicitly (avoid ${PATH} — it can self-reference and get dropped).
+    // On a Linux CI agent, drop this line; the tools are already on PATH.
+    PATH                  = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
     PRIMARY_REGION        = 'ap-southeast-1'
     AWS_DEFAULT_REGION    = 'ap-southeast-1'
     AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
@@ -70,14 +73,13 @@ pipeline {
     }
 
     stage('Approval Singapore') {
-      when { expression { params.APPLY } }
       steps {
-        input message: 'Apply to Singapore?'
+        // Pauses here. Review the plan printed above, then Proceed or Abort.
+        input message: 'Review the Singapore plan above. Apply?'
       }
     }
 
     stage('Apply Singapore') {
-      when { expression { params.APPLY } }
       steps {
         dir('terraform/application') {
           sh 'terraform apply -input=false -state=terraform.singapore.tfstate tfplan.singapore'
@@ -88,7 +90,6 @@ pipeline {
     // Ireland comes after Singapore: it joins the Aurora global cluster and reads
     // Singapore's DB secret from its state, so Singapore must be applied first.
     stage('Plan Ireland') {
-      when { expression { params.APPLY } }
       steps {
         dir('terraform/application') {
           sh '''
@@ -103,14 +104,12 @@ pipeline {
     }
 
     stage('Approval Ireland') {
-      when { expression { params.APPLY } }
       steps {
-        input message: 'Apply to Ireland?'
+        input message: 'Review the Ireland plan above. Apply?'
       }
     }
 
     stage('Apply Ireland') {
-      when { expression { params.APPLY } }
       steps {
         dir('terraform/application') {
           sh 'terraform apply -input=false -state=terraform.ireland.tfstate tfplan.ireland'
