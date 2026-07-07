@@ -1,0 +1,127 @@
+// Bakes ONE WordPress AMI (copied to every region) and deploys the application
+// layer to both regions with Terraform. Same build-once logic as the manual
+// runbook: one image, promoted to each region.
+//
+// Agent needs: packer, terraform, ansible, awscli on PATH.
+// Jenkins credentials (Secret text): aws-access-key-id, aws-secret-access-key
+// The DB password is generated in Terraform and stored in Secrets Manager, so the
+// pipeline takes no password input.
+// Prerequisite: core-infra for both regions is already applied.
+// Note: local state via -state. Real CI must use the S3 backend (agent state is
+// ephemeral) — see the commented block in versions.tf.
+
+pipeline {
+  agent any
+
+  options {
+    timestamps()
+    disableConcurrentBuilds()
+  }
+
+  parameters {
+    booleanParam(name: 'APPLY', defaultValue: false, description: 'Apply after plan (otherwise plan only)')
+  }
+
+  environment {
+    PRIMARY_REGION        = 'ap-southeast-1'
+    AWS_DEFAULT_REGION    = 'ap-southeast-1'
+    AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
+    AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Bake AMI') {
+      steps {
+        dir('packer') {
+          sh 'packer init .'
+          sh 'packer validate -var region=$PRIMARY_REGION .'
+          // Build once in the primary region; ami_regions copies it to the rest.
+          sh 'packer build -var region=$PRIMARY_REGION .'
+        }
+        // artifact_id is comma-separated "region:ami" pairs, one per region.
+        script {
+          def ids = readJSON(file: 'packer/manifest.json').builds[-1].artifact_id.split(',')
+          env.AMI_SINGAPORE = ids.find { it.startsWith('ap-southeast-1:') }.split(':')[1]
+          env.AMI_IRELAND   = ids.find { it.startsWith('eu-west-1:') }.split(':')[1]
+          echo "Singapore ${env.AMI_SINGAPORE} / Ireland ${env.AMI_IRELAND}"
+        }
+      }
+    }
+
+    stage('Plan Singapore') {
+      steps {
+        dir('terraform/application') {
+          sh 'terraform init -input=false'
+          sh '''
+            terraform plan -input=false \
+              -var-file=env/singapore.tfvars \
+              -state=terraform.singapore.tfstate \
+              -var ami_id=$AMI_SINGAPORE \
+              -out=tfplan.singapore
+          '''
+        }
+      }
+    }
+
+    stage('Approval Singapore') {
+      when { expression { params.APPLY } }
+      steps {
+        input message: 'Apply to Singapore?'
+      }
+    }
+
+    stage('Apply Singapore') {
+      when { expression { params.APPLY } }
+      steps {
+        dir('terraform/application') {
+          sh 'terraform apply -input=false -state=terraform.singapore.tfstate tfplan.singapore'
+        }
+      }
+    }
+
+    // Ireland comes after Singapore: it joins the Aurora global cluster and reads
+    // Singapore's DB secret from its state, so Singapore must be applied first.
+    stage('Plan Ireland') {
+      when { expression { params.APPLY } }
+      steps {
+        dir('terraform/application') {
+          sh '''
+            terraform plan -input=false \
+              -var-file=env/ireland.tfvars \
+              -state=terraform.ireland.tfstate \
+              -var ami_id=$AMI_IRELAND \
+              -out=tfplan.ireland
+          '''
+        }
+      }
+    }
+
+    stage('Approval Ireland') {
+      when { expression { params.APPLY } }
+      steps {
+        input message: 'Apply to Ireland?'
+      }
+    }
+
+    stage('Apply Ireland') {
+      when { expression { params.APPLY } }
+      steps {
+        dir('terraform/application') {
+          sh 'terraform apply -input=false -state=terraform.ireland.tfstate tfplan.ireland'
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      sh 'rm -f terraform/application/tfplan.singapore terraform/application/tfplan.ireland packer/manifest.json'
+    }
+  }
+}

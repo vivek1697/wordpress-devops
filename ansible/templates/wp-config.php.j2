@@ -1,0 +1,33 @@
+<?php
+// DB settings are written at boot by user-data, so nothing sensitive
+// lives in the image.
+require_once '/etc/wordpress/wp-db.php';
+
+define('DB_CHARSET', 'utf8mb4');
+define('DB_COLLATE', '');
+
+// Salts are shared across the whole fleet on purpose, so a login cookie
+// stays valid on any instance behind the ALB. Demo values here; prod
+// pulls these from Secrets Manager.
+define('AUTH_KEY', 'demo-change-me-auth');
+define('SECURE_AUTH_KEY', 'demo-change-me-secure-auth');
+define('LOGGED_IN_KEY', 'demo-change-me-logged-in');
+define('NONCE_KEY', 'demo-change-me-nonce');
+define('AUTH_SALT', 'demo-change-me-auth-salt');
+define('SECURE_AUTH_SALT', 'demo-change-me-secure-auth-salt');
+define('LOGGED_IN_SALT', 'demo-change-me-logged-in-salt');
+define('NONCE_SALT', 'demo-change-me-nonce-salt');
+
+$table_prefix = 'wp_';
+
+// CloudFront terminates HTTPS and talks HTTP to the ALB. Trust the
+// forwarded header so WordPress builds https URLs and doesn't redirect-loop.
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+}
+
+if (!defined('ABSPATH')) {
+    define('ABSPATH', __DIR__ . '/');
+}
+
+require_once ABSPATH . 'wp-settings.php';

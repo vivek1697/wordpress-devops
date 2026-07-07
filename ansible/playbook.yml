@@ -1,0 +1,90 @@
+---
+# Configures a host into a ready-to-run WordPress server.
+# Packer runs this to bake the immutable AMI the ASG launches from.
+- name: Build WordPress image
+  hosts: all
+  become: true
+
+  vars:
+    wordpress_version: "6.5.3"
+    web_root: /var/www/html
+
+  tasks:
+    - name: Install Apache, PHP and the extensions WordPress needs
+      ansible.builtin.apt:
+        name:
+          - apache2
+          - php
+          - libapache2-mod-php
+          - php-mysql
+          - php-curl
+          - php-gd
+          - php-xml
+          - php-mbstring
+          - php-zip
+          - nfs-common
+          - awscli
+          - jq
+        update_cache: true
+        state: present
+
+    - name: Download WordPress {{ wordpress_version }}
+      ansible.builtin.get_url:
+        url: "https://wordpress.org/wordpress-{{ wordpress_version }}.tar.gz"
+        dest: /tmp/wordpress.tar.gz
+
+    - name: Remove the Apache default page
+      ansible.builtin.file:
+        path: "{{ web_root }}/index.html"
+        state: absent
+
+    - name: Extract WordPress into the web root
+      ansible.builtin.unarchive:
+        src: /tmp/wordpress.tar.gz
+        dest: "{{ web_root }}"
+        remote_src: true
+        extra_opts: [--strip-components=1]
+        creates: "{{ web_root }}/wp-settings.php"
+
+    # Boot-time user-data writes the DB settings here, so no credentials
+    # are baked into the image.
+    - name: Create the directory for the boot-written DB config
+      ansible.builtin.file:
+        path: /etc/wordpress
+        state: directory
+        owner: root
+        group: www-data
+        mode: "0750"
+
+    - name: Install wp-config.php
+      ansible.builtin.template:
+        src: wp-config.php.j2
+        dest: "{{ web_root }}/wp-config.php"
+        owner: www-data
+        group: www-data
+        mode: "0640"
+
+    - name: Own the web root as www-data
+      ansible.builtin.file:
+        path: "{{ web_root }}"
+        owner: www-data
+        group: www-data
+        recurse: true
+
+    - name: Enable mod_rewrite for permalinks
+      ansible.builtin.command: a2enmod rewrite
+      args:
+        creates: /etc/apache2/mods-enabled/rewrite.load
+      notify: Restart Apache
+
+    - name: Start Apache on boot
+      ansible.builtin.service:
+        name: apache2
+        enabled: true
+        state: started
+
+  handlers:
+    - name: Restart Apache
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
