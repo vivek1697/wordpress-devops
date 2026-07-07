@@ -1,19 +1,19 @@
 output "vpc_id" {
-  description = "ID of the VPC."
+  description = "VPC id"
   value       = module.vpc.vpc_id
 }
 
 output "public_subnet_ids" {
-  description = "IDs of the public subnets."
+  description = "public subnet ids"
   value       = module.vpc.public_subnet_ids
 }
 
 output "private_app_subnet_ids" {
-  description = "IDs of the app-tier private subnets (WordPress, EFS)."
+  description = "app-tier private subnet ids (WordPress, EFS)"
   value       = module.vpc.private_app_subnet_ids
 }
 
 output "private_data_subnet_ids" {
-  description = "IDs of the data-tier private subnets (Aurora)."
+  description = "data-tier private subnet ids (Aurora)"
   value       = module.vpc.private_data_subnet_ids
 }

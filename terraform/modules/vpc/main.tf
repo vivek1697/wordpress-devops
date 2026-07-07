@@ -1,5 +1,4 @@
-# Pick the first az_count AZs available in whatever region we run in,
-# so the module is not tied to region-specific AZ names.
+# first N AZs of whatever region we run in, so the module stays region-agnostic
 data "aws_availability_zones" "available" {
   state = "available"
 }
@@ -21,7 +20,7 @@ resource "aws_internet_gateway" "this" {
   tags   = { Name = "${var.name_prefix}-igw" }
 }
 
-# Public subnets hold the ALB and the NAT gateway.
+# public subnets: ALB and NAT
 resource "aws_subnet" "public" {
   count = var.az_count
 
@@ -33,8 +32,7 @@ resource "aws_subnet" "public" {
   tags = { Name = "${var.name_prefix}-public-${local.azs[count.index]}" }
 }
 
-# App tier: WordPress instances and the EFS mount targets.
-# CIDR index offset by 10 to keep the ranges easy to tell apart.
+# app tier: WordPress + EFS mount targets. CIDR offset by 10 to tell ranges apart
 resource "aws_subnet" "private_app" {
   count = var.az_count
 
@@ -45,7 +43,7 @@ resource "aws_subnet" "private_app" {
   tags = { Name = "${var.name_prefix}-app-${local.azs[count.index]}" }
 }
 
-# Data tier: Aurora only. Kept separate so it can have no internet route.
+# data tier: Aurora only, kept separate so it can have no internet route
 resource "aws_subnet" "private_data" {
   count = var.az_count
 
@@ -56,9 +54,8 @@ resource "aws_subnet" "private_data" {
   tags = { Name = "${var.name_prefix}-data-${local.azs[count.index]}" }
 }
 
-# One NAT for the demo. It only handles outbound from private subnets
-# (package/AWS API calls), not user traffic, so a single one is fine here.
-# Prod would run one NAT per AZ to drop this single point of failure.
+# one NAT for the demo — outbound only from private subnets, not user traffic.
+# prod: one NAT per AZ to drop this SPOF
 resource "aws_eip" "nat" {
   domain = "vpc"
   tags   = { Name = "${var.name_prefix}-nat-eip" }
@@ -72,7 +69,7 @@ resource "aws_nat_gateway" "this" {
   depends_on = [aws_internet_gateway.this]
 }
 
-# Public subnets route to the internet through the IGW.
+# public subnets -> internet via IGW
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
   tags   = { Name = "${var.name_prefix}-public-rt" }
@@ -91,7 +88,7 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# App subnets route outbound through the NAT gateway (SSM, package pulls).
+# app subnets -> NAT for outbound (SSM, package pulls)
 resource "aws_route_table" "app" {
   vpc_id = aws_vpc.this.id
   tags   = { Name = "${var.name_prefix}-app-rt" }
@@ -110,8 +107,7 @@ resource "aws_route_table_association" "app" {
   route_table_id = aws_route_table.app.id
 }
 
-# Data subnets have no internet route at all. Aurora only talks inside the VPC,
-# so there is nothing to gain from outbound access and a smaller blast radius.
+# data subnets have no internet route at all — Aurora only talks inside the VPC
 resource "aws_route_table" "data" {
   vpc_id = aws_vpc.this.id
   tags   = { Name = "${var.name_prefix}-data-rt" }

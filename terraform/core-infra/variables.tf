@@ -1,17 +1,17 @@
 variable "project" {
-  description = "Project name, used as a prefix for names and tags."
+  description = "name prefix for resources and tags"
   type        = string
   default     = "wp-devops"
 }
 
 variable "environment" {
-  description = "Environment name, e.g. demo, staging, prod."
+  description = "environment name (dev, staging, prod)"
   type        = string
   default     = "dev"
 }
 
-# No default on purpose, so we never deploy to the wrong region by accident.
+# no default on purpose — avoids deploying to the wrong region by accident
 variable "aws_region" {
-  description = "Region to deploy this stack into."
+  description = "region to deploy into"
   type        = string
 }

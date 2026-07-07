@@ -8,7 +8,7 @@ terraform {
     }
   }
 
-  # Local state for the demo. Prod should use S3 + DynamoDB lock (below).
+  # local state for the demo. prod: S3 + DynamoDB lock (below)
   #
   # backend "s3" {
   #   bucket         = "wordpress-devops-tfstate"

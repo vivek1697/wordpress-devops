@@ -1,16 +1,16 @@
 variable "name_prefix" {
-  description = "Prefix for resource names, e.g. wordpress-devops-dev."
+  description = "name prefix for resources"
   type        = string
 }
 
 variable "vpc_cidr" {
-  description = "CIDR block for the VPC."
+  description = "VPC CIDR"
   type        = string
   default     = "10.0.0.0/16"
 }
 
 variable "az_count" {
-  description = "How many AZs to spread subnets across."
+  description = "how many AZs to spread subnets across"
   type        = number
   default     = 2
 }
