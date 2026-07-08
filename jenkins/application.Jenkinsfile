@@ -1,6 +1,5 @@
-// Bakes ONE WordPress AMI (copied to every region) and deploys the application
-// layer to both regions with Terraform. Same build-once logic as the manual
-// runbook: one image, promoted to each region.
+// Pipeline 2 of 3 — application layer (ALB + ASG + Aurora + EFS).
+// Bakes ONE WordPress AMI (copied to every region) and deploys both regions.
 //
 // Flow per region: plan -> review the plan in the log -> approve -> apply.
 // The plan always runs first; the apply only happens if a human approves.
@@ -9,9 +8,9 @@
 // Jenkins credentials (Secret text): aws-access-key-id, aws-secret-access-key
 // The DB password is generated in Terraform and stored in Secrets Manager, so the
 // pipeline takes no password input.
-// Prerequisite: core-infra for both regions is already applied.
+// Prerequisite: the core-infra pipeline has been run for both regions.
 // Note: local state via -state. Real CI must use the S3 backend (agent state is
-// ephemeral) — see the commented block in versions.tf.
+// ephemeral, and separate pipelines can't share local state) — see versions.tf.
 
 pipeline {
   agent any

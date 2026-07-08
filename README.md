@@ -107,6 +107,12 @@ snapshot from the EC2 console or via `aws ec2`.
 
 ## CI/CD (optional)
 
-`jenkins/Jenkinsfile` runs the same flow: bake AMI → per-region plan → manual
-approval → apply. Needs `terraform/packer/ansible/awscli` on the agent and AWS
-credentials as Jenkins secrets.
+Three Jenkins pipelines mirror the three Terraform layers — run them in order:
+
+1. `jenkins/core-infra.Jenkinsfile` — VPC/networking, both regions
+2. `jenkins/application.Jenkinsfile` — bake AMI → ALB/ASG/Aurora/EFS, both regions
+3. `jenkins/global.Jenkinsfile` — CloudFront + WAF
+
+Each runs plan → review → manual approval → apply. Needs `terraform/packer/ansible/awscli`
+on the agent and AWS credentials as Jenkins secrets. For the pipelines to share state
+across jobs, use the S3 backend (see `versions.tf`).
